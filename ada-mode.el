@@ -2444,7 +2444,7 @@ and the offset."
       (if (and ada-indent-is-separate
 	       (save-excursion
 		 (goto-char (match-end 0))
-		 (ada-goto-next-non-ws (point-at-eol))
+		 (ada-goto-next-non-ws (pos-eol))
 		 (looking-at "\\<abstract\\>\\|\\<separate\\>")))
 	  (save-excursion
 	    (ada-goto-stmt-start)
@@ -2551,7 +2551,7 @@ and the offset."
 		       (forward-line -1)
 		       (beginning-of-line)
 		       (while (and (not pos)
-				   (search-forward "--" (point-at-eol) t))
+				   (search-forward "--" (pos-eol) t))
 			 (unless (ada-in-string-p)
 			   (setq pos (point))))
 		       pos))
@@ -4238,7 +4238,7 @@ of the region.  Otherwise, operate only on the current line."
 (defun ada-untab-hard ()
   "Indent current line to previous tab stop."
   (interactive)
-  (indent-rigidly (point-at-bol) (point-at-eol) (- 0 ada-indent)))
+  (indent-rigidly (point-at-bol) (pos-eol) (- 0 ada-indent)))
 
 
 ;; ------------------------------------------------------------

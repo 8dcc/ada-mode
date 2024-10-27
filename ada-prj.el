@@ -192,7 +192,7 @@ One item per line should be found in the file."
       (widen)
       (goto-char (point-min))
       (while (not (eobp))
-	(setq line (buffer-substring-no-properties (point) (point-at-eol)))
+	(setq line (buffer-substring-no-properties (point) (pos-eol)))
 	(cl-pushnew line list :test #'equal)
 	(forward-line 1))
       (kill-buffer nil)
