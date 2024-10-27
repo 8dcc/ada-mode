@@ -350,7 +350,8 @@ This is also used for <<..>> labels"
   :type '(choice (const ada83) (const ada95) (const ada2005)) :group 'ada)
 
 (defcustom ada-move-to-declaration nil
-  "Non-nil means `ada-move-to-start' moves to the subprogram declaration, not to `begin'."
+  "Non-nil means `ada-move-to-start' moves to the subprogram declaration, not to
+`begin'."
   :type 'boolean :group 'ada)
 
 (defcustom ada-popup-key '[down-mouse-3]
@@ -603,8 +604,9 @@ Note that this also matches a variable declaration.")
   (concat "\\(?:" ada-block-label-re "\\)\\|\\(?:" ada-goto-label-re "\\)")
   "Regexp matching a goto or block label.")
 
-;;  "with" needs to be included in the regexp, to match generic subprogram parameters
-;;  Similarly, we put '[not] overriding' on the same line with 'procedure' etc.
+;; "with" needs to be included in the regexp, to match generic subprogram
+;; parameters Similarly, we put '[not] overriding' on the same line with
+;; 'procedure' etc.
 (defvar ada-procedure-start-regexp
   (concat
    "^[ \t]*\\(with[ \t]+\\)?\\(\\(not[ \t]+\\)?overriding[ \t]+\\)?\\(procedure\\|function\\|task\\)[ \t\n]+"
@@ -625,7 +627,8 @@ The actual start is at (match-beginning 4).  The name is in (match-string 5).")
   "Regexp matching a fully qualified name (including attribute).")
 
 (defconst ada-package-start-regexp
-  (concat "^[ \t]*\\(private[ \t]+\\)?\\(package\\)[ \t\n]+\\(body[ \t]*\\)?" ada-name-regexp)
+  (concat "^[ \t]*\\(private[ \t]+\\)?\\(package\\)[ \t\n]+\\(body[ \t]*\\)?"
+          ada-name-regexp)
   "Regexp matching start of package.
 The package name is in (match-string 4).")
 
@@ -666,7 +669,8 @@ A new statement starts after these.")
     (concat "\\<"
 	    (regexp-opt
 	     '("end" "loop" "select" "begin" "case" "do" "declare"
-	       "if" "task" "package" "procedure" "function" "record" "protected") t)
+	       "if" "task" "package" "procedure" "function" "record" "protected")
+         t)
 	    "\\>"))
   "Regexp used in `ada-goto-matching-start'.")
 
@@ -676,8 +680,10 @@ A new statement starts after these.")
 
 (defvar ada-subprog-start-re
   (eval-when-compile
-    (concat "\\<" (regexp-opt '("accept" "entry" "function" "overriding" "package" "procedure"
-				"protected" "task") t) "\\>"))
+    (concat "\\<" (regexp-opt '("accept" "entry" "function" "overriding"
+                                "package" "procedure" "protected" "task")
+                              t)
+            "\\>"))
   "Regexp for the start of a subprogram.")
 
 (defvar ada-contextual-menu-on-identifier nil
@@ -1364,7 +1370,8 @@ the file name."
 
 (defun ada-save-exceptions-to-file (file-name)
   "Save the casing exception lists to the file FILE-NAME.
-Casing exception lists are `ada-case-exception' and `ada-case-exception-substring'."
+Casing exception lists are `ada-case-exception' and
+`ada-case-exception-substring'."
   (find-file (expand-file-name file-name))
   (erase-buffer)
   (mapc (lambda (x) (insert (car x) "\n"))
@@ -2932,7 +2939,8 @@ ORGPOINT is the limit position used in the calculation."
 
      ;; Special case for label:
      ((looking-at ada-block-label-re)
-      (list (- (save-excursion (back-to-indentation) (point)) ada-label-indent) 'ada-indent))
+      (list (- (save-excursion (back-to-indentation) (point)) ada-label-indent)
+            'ada-indent))
 
      ;; nothing follows the block-start
      (t
@@ -3494,7 +3502,9 @@ otherwise throw error."
         (regexp (eval-when-compile
                   (concat "\\<"
                           (regexp-opt
-                           '("is" "separate" "end" "declare" "if" "new" "begin" "generic" "when") t)
+                           '("is" "separate" "end" "declare" "if" "new" "begin"
+                             "generic" "when")
+                           t)
                           "\\>")))
 
 	;;  first should be set to t if we should stop at the first
@@ -3597,7 +3607,8 @@ otherwise throw error."
              ;; 'ada-move-to-end' from inside a case statement; then
              ;; we are not ignoring 'when'.
              (save-excursion
-               ;; Skip type discriminants or case argument function call param list
+               ;; Skip type discriminants or case argument function call param
+               ;; list.
                (forward-comment -10000)
                (forward-char -1)
                (if (= (char-after) ?\))
@@ -4110,7 +4121,8 @@ Return nil if the private is part of the package name, as in
 
 
 (defun ada-in-paramlist-p ()
-  "Return t if point is inside the parameter-list of a declaration, but not a subprogram call or aggregate."
+  "Return t if point is inside the parameter-list of a declaration, but not a
+subprogram call or aggregate."
   (save-excursion
     (and
      (ada-search-ignore-string-comment "(\\|)" t nil t)
@@ -5073,7 +5085,8 @@ Since the search can be long, the results are cached."
        (ff-find-other-file t)))
 
 (defun ada-set-point-accordingly ()
-  "Move to the function declaration that was set by `ff-which-function-are-we-in'."
+  "Move to the function declaration that was set by
+`ff-which-function-are-we-in'."
   (if ff-function-name
       (progn
 	(goto-char (point-min))
@@ -5375,7 +5388,8 @@ This function typically is to be hooked into `ff-file-created-hook'."
 
 
 (defun ada-make-subprogram-body ()
-  "Create a dummy subprogram body in package body file from spec surrounding point."
+  "Create a dummy subprogram body in package body file from spec surrounding
+point."
   (interactive)
   (let* ((found (re-search-backward ada-procedure-start-regexp nil t))
 	 (spec  (match-beginning 0))
