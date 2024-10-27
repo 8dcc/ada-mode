@@ -2575,7 +2575,7 @@ and the offset."
      ((and (= (char-after) ?#)
 	   (equal ada-which-compiler 'gnat)
 	   (looking-at "#[ \t]*\\(if\\|els\\(e\\|if\\)\\|end[ \t]*if\\)"))
-      (list (point-at-bol) 0))
+      (list (pos-bol) 0))
 
      ;;--------------------------------
      ;;   starting with ')' (end of a parameter list)
@@ -4022,7 +4022,7 @@ Point is moved at the beginning of the SEARCH-RE."
                   (funcall search-func search-re limit 1))
         (setq begin (match-beginning 0))
         (setq end (match-end 0))
-        (setq parse-result (parse-partial-sexp (point-at-bol) (point)))
+        (setq parse-result (parse-partial-sexp (pos-bol) (point)))
         (cond
          ;;
          ;; If inside a string, skip it (and the following comments)
@@ -4248,7 +4248,7 @@ of the region.  Otherwise, operate only on the current line."
 (defun ada-untab-hard ()
   "Indent current line to previous tab stop."
   (interactive)
-  (indent-rigidly (point-at-bol) (pos-eol) (- 0 ada-indent)))
+  (indent-rigidly (pos-bol) (pos-eol) (- 0 ada-indent)))
 
 
 ;; ------------------------------------------------------------
@@ -5263,7 +5263,7 @@ Use \\[widen] to go back to the full visibility for the buffer."
       (widen)
       (forward-line 1)
       (ada-previous-procedure)
-      (setq end (point-at-bol))
+      (setq end (pos-bol))
       (ada-move-to-end)
       (end-of-line)
       (narrow-to-region end (point))
