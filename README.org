@@ -1,0 +1,54 @@
+#+TITLE: Old ada-mode
+#+AUTHOR: 8dcc
+#+OPTIONS: toc:2
+#+STARTUP: nofold
+
+I wanted to update some things.
+
+You can enable this mode in Ada files with:
+
+#+begin_src emacs-lisp
+(dolist (extension '("gpr" "ada" "ads" "adb"))
+  (add-to-list 'auto-mode-alist (cons (concat "\\." extension "\\'")
+                                      'ada-mode)))
+#+end_src
+
+* Original README
+
+/Here is the original README, from [[https://github.com/tkurtbond/old-ada-mode][tkurtbond/old-ada-mode]]./
+
+This is a fork of the old version of =ada-mode.el= that was distributed with
+Emacs.
+
+I was unable to get the newer packaged version of =ada-mode.el=, which uses an
+external program for indentation, fontification, and navigation, to work after
+trying on several operating systems.
+
+However, the old version worked fine for me.
+
+So I dug it out of the =Emacs git repository= at =savannah.gnu.org=.  Basically, I
+cloned the git repository and then figured out what commit it was deleted in by
+doing:
+
+#+begin_src
+$ git rev-list HEAD -n 1 -- lisp/progmodes/ada-mode.el
+a13c64204c8ead966789abf8efe176e4f2d4f599
+#+end_src
+
+Then I checked out the files involved:
+
+#+begin_src
+$ git checkout a13c64204c8ead966789abf8efe176e4f2d4f599^ lisp/progmodes/ada-mode.el lisp/progmodes/ada-prj.el lisp/progmodes/ada-stmt.el lisp/progmodes/ada-xref.el doc/misc/ada-mode.texi doc/docstyle.texi doc/doclicense.texi
+#+end_src
+
+The =^= at the end of the commit hash says to get the previous commit.
+
+This formed the initial checking for this repository.
+
+It turns out that Emacs 28 doesn't automatically add ada files to
+=auto-mode-alist= (see [[https://github.com/tkurtbond/old-ada-mode/issues/2][issue #2]]). So, do the following:
+
+#+begin_src emacs-lisp
+(cl-loop for ext in '("\\.gpr$" "\\.ada$" "\\.ads$" "\\.adb$")
+         do (add-to-list 'auto-mode-alist (cons ext 'ada-mode)))
+#+end_src
