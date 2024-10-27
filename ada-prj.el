@@ -567,7 +567,7 @@ Parameters WIDGET-MODIFIED, EVENT match :notify for the widget."
       ;;  variables
       (momentary-string-display
        (concat "*****Help*****\n" text "\n**************\n")
-       (point-at-bol 2)))))
+       (pos-bol 2)))))
 
 (defun ada-prj-show-value (widget _widget-modified event)
   "Show the current field value in WIDGET.
