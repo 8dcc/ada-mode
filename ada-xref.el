@@ -1408,8 +1408,8 @@ project file."
 	  (setq cmd (concat cmd "--tty")))
 
       (if (and (string-match "jdb" (comint-arguments cmd 0 0))
-	       (boundp 'jdb))
-	  (funcall (symbol-function 'jdb) cmd)
+	       (boundp #'jdb))
+	  (funcall #'jdb cmd)
 	(gdb cmd))
 
       ;;  Restore the standard fset command (or for instance C-U M-x shell
