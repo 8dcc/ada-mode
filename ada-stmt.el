@@ -78,6 +78,14 @@
 (require 'easymenu)
 (require 'ada-mode)
 
+(defmacro ada-define-skeleton (name docstring prompt &rest body)
+  "Define a skeleton that sets `ada-skeleton-start'."
+  `(define-skeleton ,name
+     ,docstring
+     ,prompt
+     '(setq ada-skeleton-start (point))
+     ,@body))
+
 (defun ada-func-or-proc-name ()
   "Return the name of the current function or procedure."
   (save-excursion
@@ -88,14 +96,14 @@
 
 ;;; ---- statement skeletons ------------------------------------------
 
-(define-skeleton ada-array
+(ada-define-skeleton ada-array
   "Insert array type definition.
 Prompt for component type and index subtypes."
   ()
   "array (" ("index definition: " str ", " ) -2 ") of " _ ?\;)
 
 
-(define-skeleton ada-case
+(ada-define-skeleton ada-case
   "Build skeleton case statement.
 Prompt for the selector expression.  Also builds the first when clause."
   "[selector expression]: "
@@ -105,14 +113,14 @@ Prompt for the selector expression.  Also builds the first when clause."
   < < "end case;")
 
 
-(define-skeleton ada-when
+(ada-define-skeleton ada-when
   "Start a case statement alternative with a when clause."
   ()
   < "when " ("discrete choice: " str " | ") -3 " =>" \n
   >)
 
 
-(define-skeleton ada-declare-block
+(ada-define-skeleton ada-declare-block
   "Insert a block with a declare part.
 Indent for the first declaration."
   "[block name]: "
@@ -124,7 +132,7 @@ Indent for the first declaration."
   < "end " str | -1 ?\;)
 
 
-(define-skeleton ada-exception-block
+(ada-define-skeleton ada-exception-block
   "Insert a block with an exception part.
 Indent for the first line of code."
   "[block name]: "
@@ -136,20 +144,20 @@ Indent for the first line of code."
   < "end " str | -1 ?\;)
 
 
-(define-skeleton ada-exception
+(ada-define-skeleton ada-exception
   "Insert an indented exception part into a block."
   ()
   < "exception" \n
   >)
 
 
-(define-skeleton ada-exit-1
+(ada-define-skeleton ada-exit-1
   "Insert then exit condition of the exit statement, prompting for condition."
   "[exit condition]: "
   "when " str | -5)
 
 
-(define-skeleton ada-exit
+(ada-define-skeleton ada-exit
   "Insert an exit statement, prompting for loop name and condition."
   "[name of loop to exit]: "
   "exit " str & ?\ (ada-exit-1) | -1 ?\;)
@@ -165,7 +173,7 @@ Indent for the first line of code."
       (ada-header-tmpl))))
 
 
-(define-skeleton ada-header-tmpl
+(ada-define-skeleton ada-header-tmpl
   "Insert a comment block containing the module title, author, etc."
   "[Description]: "
   "--                              -*- Mode: Ada -*-"
@@ -180,13 +188,13 @@ Indent for the first line of code."
   "\n")
 
 
-(define-skeleton ada-display-comment
+(ada-define-skeleton ada-display-comment
   "Inserts three comment lines, making a display comment."
   ()
   "--\n" ada-fill-comment-prefix _ "\n--")
 
 
-(define-skeleton ada-if
+(ada-define-skeleton ada-if
   "Insert skeleton if statement, prompting for a boolean-expression."
   "[condition]: "
   "if " str " then" \n
@@ -194,7 +202,7 @@ Indent for the first line of code."
   < "end if;")
 
 
-(define-skeleton ada-elsif
+(ada-define-skeleton ada-elsif
   "Add an elsif clause to an if statement,
 prompting for the boolean-expression."
   "[condition]: "
@@ -202,14 +210,14 @@ prompting for the boolean-expression."
   >)
 
 
-(define-skeleton ada-else
+(ada-define-skeleton ada-else
   "Add an else clause inside an if-then-end-if clause."
   ()
   < "else" \n
   >)
 
 
-(define-skeleton ada-loop
+(ada-define-skeleton ada-loop
   "Insert a skeleton loop statement.  The exit statement is added by hand."
   "[loop name]: "
   < str & ?: & \n
@@ -218,19 +226,19 @@ prompting for the boolean-expression."
   < "end loop " str | -1 ?\;)
 
 
-(define-skeleton ada-for-loop-prompt-variable
+(ada-define-skeleton ada-for-loop-prompt-variable
   "Prompt for the loop variable."
   "[loop variable]: "
   str)
 
 
-(define-skeleton ada-for-loop-prompt-range
+(ada-define-skeleton ada-for-loop-prompt-range
   "Prompt for the loop range."
   "[loop range]: "
   str)
 
 
-(define-skeleton ada-for-loop
+(ada-define-skeleton ada-for-loop
   "Build a skeleton for-loop statement, prompting for the loop parameters."
   "[loop name]: "
   < str & ?: & \n
@@ -243,13 +251,13 @@ prompting for the boolean-expression."
   < "end loop " str | -1 ?\;)
 
 
-(define-skeleton ada-while-loop-prompt-entry-condition
+(ada-define-skeleton ada-while-loop-prompt-entry-condition
   "Prompt for the loop entry condition."
   "[entry condition]: "
   str)
 
 
-(define-skeleton ada-while-loop
+(ada-define-skeleton ada-while-loop
   "Insert a skeleton while loop statement."
   "[loop name]: "
   < str & ?: & \n
@@ -260,7 +268,7 @@ prompting for the boolean-expression."
   < "end loop " str | -1 ?\;)
 
 
-(define-skeleton ada-package-spec
+(ada-define-skeleton ada-package-spec
   "Insert a skeleton package specification."
   "[package name]: "
   "package " str  " is" \n
@@ -268,7 +276,7 @@ prompting for the boolean-expression."
   < "end " str ?\;)
 
 
-(define-skeleton ada-package-body
+(ada-define-skeleton ada-package-body
   "Insert a skeleton package body -- includes a begin statement."
   "[package name]: "
   "package body " str " is" \n
@@ -277,20 +285,20 @@ prompting for the boolean-expression."
   < "end " str ?\;)
 
 
-(define-skeleton ada-private
+(ada-define-skeleton ada-private
   "Undent and start a private section of a package spec.  Reindent."
   ()
   < "private" \n
   >)
 
 
-(define-skeleton ada-function-spec-prompt-return
+(ada-define-skeleton ada-function-spec-prompt-return
   "Prompts for function result type."
   "[result type]: "
   str)
 
 
-(define-skeleton ada-function-spec
+(ada-define-skeleton ada-function-spec
   "Insert a function specification.  Prompts for name and arguments."
   "[function name]: "
   "function " str
@@ -300,7 +308,7 @@ prompting for the boolean-expression."
   ";" \n )
 
 
-(define-skeleton ada-procedure-spec
+(ada-define-skeleton ada-procedure-spec
   "Insert a procedure specification, prompting for its name and arguments."
   "[procedure name]: "
   "procedure " str
@@ -308,7 +316,7 @@ prompting for the boolean-expression."
   ";" \n )
 
 
-(define-skeleton ada-subprogram-body
+(ada-define-skeleton ada-subprogram-body
   "Insert frame for subprogram body.
 Invoke right after `ada-function-spec' or `ada-procedure-spec'."
   ()
@@ -332,25 +340,25 @@ Invoke right after `ada-function-spec' or `ada-procedure-spec'."
   ";" \n)
 
 
-(define-skeleton ada-separate
+(ada-define-skeleton ada-separate
   "Finish a body stub with `separate'."
   ()
   > "separate;" \n
   <)
 
 
-;(define-skeleton ada-with
+;(ada-define-skeleton ada-with
 ;  "Inserts a with clause, prompting for the list of units depended upon."
 ;  "[list of units depended upon]: "
 ;  "with " str ?\;)
 
-;(define-skeleton ada-use
+;(ada-define-skeleton ada-use
 ;  "Inserts a use clause, prompting for the list of packages used."
 ;  "[list of packages used]: "
 ;  "use " str ?\;)
 
 
-(define-skeleton ada-record
+(ada-define-skeleton ada-record
   "Insert a skeleton record type declaration."
   ()
   "record" \n
@@ -358,14 +366,14 @@ Invoke right after `ada-function-spec' or `ada-procedure-spec'."
   < "end record;")
 
 
-(define-skeleton ada-subtype
+(ada-define-skeleton ada-subtype
   "Start insertion of a subtype declaration, prompting for the subtype name."
   "[subtype name]: "
   "subtype " str " is " _ ?\;
   (not (message "insert subtype indication.")))
 
 
-(define-skeleton ada-type
+(ada-define-skeleton ada-type
   "Start insertion of a type declaration, prompting for the type name."
   "[type name]: "
   "type " str ?\(
@@ -375,7 +383,7 @@ Invoke right after `ada-function-spec' or `ada-procedure-spec'."
   (not (message "insert type definition.")))
 
 
-(define-skeleton ada-task-body
+(ada-define-skeleton ada-task-body
   "Insert a task body, prompting for the task name."
   "[task name]: "
   "task body " str " is\n"
@@ -384,7 +392,7 @@ Invoke right after `ada-function-spec' or `ada-procedure-spec'."
   < "end " str ";" )
 
 
-(define-skeleton ada-task-spec
+(ada-define-skeleton ada-task-spec
   "Insert a task specification, prompting for the task name."
   "[task name]: "
   "task " str
@@ -393,20 +401,20 @@ Invoke right after `ada-function-spec' or `ada-procedure-spec'."
   <"end " str ";" )
 
 
-(define-skeleton ada-get-param1
+(ada-define-skeleton ada-get-param1
   "Prompt for arguments and if any enclose them in brackets."
   ()
   ("[parameter_specification]: " str "; " ) & -2 & ")")
 
 
-(define-skeleton ada-get-param
+(ada-define-skeleton ada-get-param
   "Prompt for arguments and if any enclose them in brackets."
   ()
   " ("
   (ada-get-param1) | -2)
 
 
-(define-skeleton ada-entry
+(ada-define-skeleton ada-entry
   "Insert a task entry, prompting for the entry name."
   "[entry name]: "
   "entry " str
@@ -414,13 +422,13 @@ Invoke right after `ada-function-spec' or `ada-procedure-spec'."
   ";" \n)
 
 
-(define-skeleton ada-entry-family-prompt-discriminant
+(ada-define-skeleton ada-entry-family-prompt-discriminant
   "Insert an entry specification, prompting for the entry name."
   "[discriminant name]: "
   str)
 
 
-(define-skeleton ada-entry-family
+(ada-define-skeleton ada-entry-family
   "Insert an entry specification, prompting for the entry name."
   "[entry name]: "
   "entry " str
@@ -429,7 +437,7 @@ Invoke right after `ada-function-spec' or `ada-procedure-spec'."
   ";" \n)
 
 
-(define-skeleton ada-select
+(ada-define-skeleton ada-select
   "Insert a select block."
   ()
   "select\n"
@@ -437,13 +445,13 @@ Invoke right after `ada-function-spec' or `ada-procedure-spec'."
   < "end select;")
 
 
-(define-skeleton ada-accept-1
+(ada-define-skeleton ada-accept-1
   "Insert a condition statement, prompting for the condition name."
   "[condition]: "
   "when " str | -5 )
 
 
-(define-skeleton ada-accept-2
+(ada-define-skeleton ada-accept-2
   "Insert an accept statement, prompting for the name and arguments."
   "[accept name]: "
   > "accept " str
@@ -453,33 +461,32 @@ Invoke right after `ada-function-spec' or `ada-procedure-spec'."
   < "end " str ";" )
 
 
-(define-skeleton ada-accept
+(ada-define-skeleton ada-accept
   "Insert an accept statement (prompt for condition, name and arguments)."
   ()
   > (ada-accept-1) & " =>\n"
   (ada-accept-2))
 
 
-(define-skeleton ada-or-accept
+(ada-define-skeleton ada-or-accept
   "Insert an accept alternative, prompting for the condition name."
   ()
   < "or\n"
   (ada-accept))
 
 
-(define-skeleton ada-or-delay
+(ada-define-skeleton ada-or-delay
   "Insert a delay alternative, prompting for the delay value."
   "[delay value]: "
   < "or\n"
   > "delay " str ";")
 
 
-(define-skeleton ada-or-terminate
+(ada-define-skeleton ada-or-terminate
   "Insert a terminate alternative."
   ()
   < "or\n"
   > "terminate;")
-
 
 (provide 'ada-stmt)
 

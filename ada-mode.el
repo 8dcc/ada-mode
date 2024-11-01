@@ -1337,14 +1337,25 @@ the file name."
                   (ada-activate-keys-for-case)))
             nil 'local))
 
+(defvar ada-skeleton-start nil
+  "Start position of an Ada skeleton.
+
+Set by skeletons defined with `ada-define-skeleton', and used by
+`ada-adjust-case-skeleton'.")
+
 (defun ada-adjust-case-skeleton ()
   "Adjust the case of the text inserted by a skeleton."
-  (save-excursion
-    (let ((aa-end (point)))
-      (ada-adjust-case-region
-       (progn (goto-char (symbol-value 'beg)) (forward-word-strictly -1)
-              (point))
-       (goto-char aa-end)))))
+  (if ada-skeleton-start
+    (save-excursion
+      (let ((aa-end (point)))
+        (ada-adjust-case-region
+         (progn (goto-char ada-skeleton-start)
+                (forward-word-strictly -1)
+                (point))
+         (goto-char aa-end)))
+
+      ;; Reset for future calls. This feels very hacky.
+      (setq ada-skeleton-start nil))))
 
 (defun ada-region-selected ()
   "Should we operate on an active region?"
