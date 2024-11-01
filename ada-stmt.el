@@ -78,6 +78,7 @@
 (require 'easymenu)
 (require 'ada-mode)
 
+;;;###autoload
 (defmacro ada-define-skeleton (name docstring prompt &rest body)
   "Define a skeleton that sets `ada-skeleton-start'."
   `(define-skeleton ,name
