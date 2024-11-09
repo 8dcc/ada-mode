@@ -158,26 +158,29 @@ and `ada-case-attribute'."
 (defcustom ada-broken-decl-indent 0
   "Number of columns to indent a broken declaration.
 
-An example is :
-  declare
-     A,
-     >>>>>B : Integer;"
+An example is:
+
+    declare
+       A,
+       >>>>>B : Integer;"
   :type 'integer :group 'ada)
 
 (defcustom ada-broken-indent 2
   "Number of columns to indent the continuation of a broken line.
 
-An example is :
-   My_Var : My_Type := (Field1 =>
-			>>>>>>>>>Value);"
+An example is:
+
+    My_Var : My_Type := (Field1 =>
+    >>>>>>>>>Value);"
   :type 'integer :group 'ada)
 
 (defcustom ada-continuation-indent ada-broken-indent
   "Number of columns to indent the continuation of broken lines in parenthesis.
 
-An example is :
-   Func (Param1,
-	 >>>>>Param2);"
+An example is:
+
+    Func (Param1,
+    >>>>>Param2);"
   :type 'integer :group 'ada)
 
 (defcustom ada-case-attribute 'ada-capitalize-word
@@ -239,10 +242,11 @@ It may be `downcase-word', `upcase-word', `ada-loose-case-word' or
 (defcustom ada-indent 3
   "Size of Ada indentation.
 
-An example is :
-procedure Foo is
-begin
->>>>>>>>>>null;"
+An example is:
+
+    procedure Foo is
+    begin
+    >>>>>>>>>>null;"
   :type 'integer  :group 'ada)
 
 (defcustom ada-indent-after-return t
@@ -294,8 +298,9 @@ type A is
   "Indentation for `record' relative to `type' or `use'.
 
 An example is:
-   type A is
-   >>>>>>>>>>>record"
+
+    type A is
+    >>>>>>>>>>>record"
   :type 'integer :group 'ada)
 
 (defcustom ada-indent-renames ada-broken-indent
@@ -304,9 +309,10 @@ If `ada-indent-return' is null or negative, the indentation is done relative to
 the open parenthesis (if there is no parenthesis, `ada-broken-indent' is used).
 
 An example is:
-   function A (B : Integer)
-       return C;
-   >>>renames Foo;"
+
+    function A (B : Integer)
+        return C;
+    >>>renames Foo;"
   :type 'integer :group 'ada)
 
 (defcustom ada-indent-return 0
@@ -315,8 +321,9 @@ If `ada-indent-return' is null or negative, the indentation is done relative to
 the open parenthesis (if there is no parenthesis, `ada-broken-indent' is used).
 
 An example is:
-   function A (B : Integer)
-   >>>>>return C;"
+
+    function A (B : Integer)
+    >>>>>return C;"
   :type 'integer :group 'ada)
 
 (defcustom ada-indent-to-open-paren t
@@ -338,9 +345,10 @@ Used by `ada-fill-comment-paragraph-postfix'."
   "Number of columns to indent a label.
 
 An example is:
-procedure Foo is
-begin
->>>>Label:
+
+    procedure Foo is
+    begin
+    >>>>Label:
 
 This is also used for <<..>> labels"
   :type 'integer :group 'ada)
@@ -383,8 +391,9 @@ and the standard runtime location, and the value of the user-defined
   "Number of columns to indent the end of a statement on a separate line.
 
 An example is:
-   if A = B
-   >>>>then"
+
+    if A = B
+    >>>>then"
   :type 'integer :group 'ada)
 
 (defcustom ada-tab-policy 'indent-auto
@@ -402,24 +411,27 @@ Must be one of :
   "Indentation for the lines in a `use' statement.
 
 An example is:
-   use Ada.Text_IO,
-   >>>>Ada.Numerics;"
+
+    use Ada.Text_IO,
+    >>>>Ada.Numerics;"
   :type 'integer :group 'ada)
 
 (defcustom ada-when-indent 3
   "Indentation for `when' relative to `exception' or `case'.
 
 An example is:
-   case A is
-   >>>>when B =>"
+
+    case A is
+    >>>>when B =>"
   :type 'integer :group 'ada)
 
 (defcustom ada-with-indent ada-broken-indent
   "Indentation for the lines in a `with' statement.
 
 An example is:
-   with Ada.Text_IO,
-   >>>>Ada.Numerics;"
+
+    with Ada.Text_IO,
+    >>>>Ada.Numerics;"
   :type 'integer :group 'ada)
 
 (defcustom ada-which-compiler 'gnat
